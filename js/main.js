@@ -15,20 +15,20 @@ checkLength ('город', 10);
 const PHOTO_DESCRIPTION_COUNT = 25;
 
 // Функция, возвращающая случайное не повторяющееся целое число из переданного диапазона включительно
-/*
 const uniqueIntegers = [];
 const  getUniqueInteger = (min, max) => {
-  const integer = getRandomInteger (min, max);
-  for (let i = 1; i <= max - 1; i++) {
-    if (uniqueIntegers.indexOfinteger(integer) !== -1) {
+  for (let i = 1; i <= max + 1; i++) {
+    const integer = getRandomInteger (min, max);
+    if (uniqueIntegers.indexOf(integer) === -1) {
       uniqueIntegers.push(integer);
       return integer;
     }
   }
+  return max;
 };
 
 getUniqueInteger (0, 10);
-*/
+
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -57,20 +57,20 @@ const getRandomElement = (elements) => {
 };
 
 const createComment = (_,id) => ({
-  id,
+  id: getUniqueInteger (1, 1000),
   avatar: 'img/avatar-' + getRandomInteger (1, 6) + '.svg',
   message: getRandomElement(MESSAGES),
   name: getRandomElement(NAMES),
 });
 
-const COMMENTS = Array.from({length: getRandomInteger (1, 10)}, createComment);
+const createComments = (quantity) => Array.from({length: quantity}, createComment);
 
 const createPhotoDescription = (_,id) => ({
   id: id+1,
   url: 'photos/' + (id + 1) + '.jpg',
   description: 'Красивая картинка',
   likes: getRandomInteger(15, 200),
-  comments: getRandomElement(COMMENTS),
+  comments: createComments(getRandomInteger(0, 15)),
 });
 
 const photoDescription = Array.from({length: PHOTO_DESCRIPTION_COUNT}, createPhotoDescription);
