@@ -24,4 +24,7 @@ const  getUniqueInteger = (min, max) => {
 
 const getRandomElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export {getRandomInteger, checkLength, getUniqueInteger, getRandomElement};
+// проверка нажатия Esc
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, checkLength, getUniqueInteger, getRandomElement, isEscapeKey};
