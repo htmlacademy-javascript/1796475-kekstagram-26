@@ -36,6 +36,7 @@ const uploadMoreComments = () => {
       element.classList.remove('hidden');
     }
   });
+  visibleCommentsCount.textContent = bigPicture.querySelectorAll('.social__comment').length - bigPicture.querySelectorAll('.social__comment.hidden').length;
 };
 
 const showBigPicture = ({url, likes, comments, description}) => {
