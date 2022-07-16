@@ -13,9 +13,11 @@ const hashTagRegexp = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
 const onLoadingEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    imgUploadOverlay.classList.add('hidden');
-    body.classList.remove('modal-open');
+    if (textHashtags !== document.activeElement && textDescription !== document.activeElement) {
+      evt.preventDefault();
+      imgUploadOverlay.classList.add('hidden');
+      body.classList.remove('modal-open');
+    }
   }
 };
 const loading = () => {
