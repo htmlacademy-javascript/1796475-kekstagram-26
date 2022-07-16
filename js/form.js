@@ -7,7 +7,6 @@ const imgUploadOverlay = imgUploadForm.querySelector('.img-upload__overlay');
 const uploadCancel = imgUploadOverlay.querySelector('#upload-cancel');
 const textHashtags = imgUploadOverlay.querySelector('.text__hashtags');
 const textDescription = imgUploadOverlay.querySelector('.text__description');
-const imgUploadSubmit = imgUploadOverlay.querySelector('.img-upload__submit');
 const maxHashtagsNumber = 5;
 const hashTagRegexp = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
@@ -32,13 +31,13 @@ const closeLoading = () => {
   uploadFile.removeEventListener('change', loading);
 };
 
-const hashtagsArray = () => textHashtags.value.trim().toLowerCase().split(/\s+/);
+const createHashtagsArray = () => textHashtags.value.trim().toLowerCase().split(/\s+/);
 
 const isCorrectHashtag = (element) => hashTagRegexp.test(element);
 
-const isCorrectHashtagsNumber = () => hashtagsArray().length <= maxHashtagsNumber;
+const isCorrectHashtagsNumber = () => createHashtagsArray().length <= maxHashtagsNumber;
 
-const validateHashtags = () => hashtagsArray().every(isCorrectHashtag);
+const validateHashtags = () => createHashtagsArray().every(isCorrectHashtag) || textHashtags.value === '';
 
 const pristine = new Pristine(imgUploadForm, {
   classTo:'img-upload__field-wrapper',
