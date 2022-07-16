@@ -20,10 +20,11 @@ const renderComment = ({avatar, message, name}) => {
 };
 
 const showBigPicture = ({url, likes, comments, description}) => {
+  bigPicture.querySelector('.social__comments').textContent = '';
   bigPicture.querySelector('.big-picture__img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
   bigPicture.querySelector('.comments-count').textContent = comments.length;
-  document.querySelector('.social__comments').append(...comments.map(renderComment));
+  bigPicture.querySelector('.social__comments').append(...comments.map(renderComment));
   bigPicture.querySelector('.social__caption').textContent = description;
   bigPicture.classList.remove('hidden');
   document.querySelector('.social__comment-count').classList.add('hidden');
