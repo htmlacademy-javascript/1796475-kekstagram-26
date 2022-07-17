@@ -24,9 +24,9 @@ const renderComment = ({avatar, message, name}) => {
 
 const hideCommentsLoader = () => {
   if (bigPicture.querySelectorAll('.social__comment.hidden').length === 0) {
-    bigPicture.querySelector('.comments-loader').classList.add('hidden');
+    commentsLoader.classList.add('hidden');
   } else {
-    bigPicture.querySelector('.comments-loader').classList.remove('hidden');
+    commentsLoader.classList.remove('hidden');
   }
 };
 
@@ -44,8 +44,6 @@ const showBigPicture = ({url, likes, comments, description}) => {
   bigPicture.querySelector('.social__comments').append(...comments.map(renderComment));
   bigPicture.querySelector('.social__caption').textContent = description;
   showMoreComments();
-  hideCommentsLoader();
-  visibleCommentsCount.textContent = bigPicture.querySelectorAll('.social__comment:not(.hidden)').length;
   commentsLoader.addEventListener('click', showMoreComments);
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onBigPictureEscKeydown);
