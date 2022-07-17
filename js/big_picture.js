@@ -22,14 +22,6 @@ const renderComment = ({avatar, message, name}) => {
   return commentElement;
 };
 
-const hideComments = () => {
-  bigPicture.querySelectorAll('.social__comment').forEach((element, i) => {
-    if (i>4) {
-      element.classList.add('hidden');
-    }
-  });
-};
-
 const hideCommentsLoader = () => {
   if (bigPicture.querySelectorAll('.social__comment.hidden').length === 0) {
     bigPicture.querySelector('.comments-loader').classList.add('hidden');
@@ -38,7 +30,7 @@ const hideCommentsLoader = () => {
   }
 };
 
-const uploadMoreComments = () => {
+const showMoreComments = () => {
   Array.from(bigPicture.querySelectorAll('.social__comment.hidden')).slice(0, 5).forEach((element) => element.classList.remove('hidden'));
   visibleCommentsCount.textContent = bigPicture.querySelectorAll('.social__comment:not(.hidden)').length;
   hideCommentsLoader();
@@ -51,15 +43,14 @@ const showBigPicture = ({url, likes, comments, description}) => {
   commentsCount.textContent = comments.length;
   bigPicture.querySelector('.social__comments').append(...comments.map(renderComment));
   bigPicture.querySelector('.social__caption').textContent = description;
-  bigPicture.classList.remove('hidden');
-  hideComments();
+  showMoreComments();
   hideCommentsLoader();
   visibleCommentsCount.textContent = bigPicture.querySelectorAll('.social__comment:not(.hidden)').length;
-  commentsLoader.addEventListener('click', uploadMoreComments);
+  commentsLoader.addEventListener('click', showMoreComments);
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onBigPictureEscKeydown);
+  bigPicture.classList.remove('hidden');
 };
-
 
 const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
