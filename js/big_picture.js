@@ -3,6 +3,9 @@ import {isEscapeKey} from './util.js';
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const similarCommentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+const commentsCount = bigPicture.querySelector('.comments-count');
+const visibleCommentsCount = bigPicture.querySelector('.visible-comments-count');
+const commentsLoader = bigPicture.querySelector('.comments-loader');
 
 const onBigPictureEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -19,18 +22,32 @@ const renderComment = ({avatar, message, name}) => {
   return commentElement;
 };
 
+const hideCommentsLoader = () => {
+  if (bigPicture.querySelectorAll('.social__comment.hidden').length === 0) {
+    commentsLoader.classList.add('hidden');
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
+};
+
+const showMoreComments = () => {
+  Array.from(bigPicture.querySelectorAll('.social__comment.hidden')).slice(0, 5).forEach((element) => element.classList.remove('hidden'));
+  visibleCommentsCount.textContent = bigPicture.querySelectorAll('.social__comment:not(.hidden)').length;
+  hideCommentsLoader();
+};
+
 const showBigPicture = ({url, likes, comments, description}) => {
   bigPicture.querySelector('.social__comments').textContent = '';
   bigPicture.querySelector('.big-picture__img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
-  bigPicture.querySelector('.comments-count').textContent = comments.length;
+  commentsCount.textContent = comments.length;
   bigPicture.querySelector('.social__comments').append(...comments.map(renderComment));
   bigPicture.querySelector('.social__caption').textContent = description;
-  bigPicture.classList.remove('hidden');
-  document.querySelector('.social__comment-count').classList.add('hidden');
-  document.querySelector('.comments-loader').classList.add('hidden');
+  showMoreComments();
+  commentsLoader.addEventListener('click', showMoreComments);
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onBigPictureEscKeydown);
+  bigPicture.classList.remove('hidden');
 };
 
 const closeBigPicture = () => {
