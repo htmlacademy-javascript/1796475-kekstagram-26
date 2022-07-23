@@ -113,8 +113,6 @@ const changeEffect = (effect) => {
   imgUploadPreview.style.filter = '';
 };
 
-effectsRadio.forEach((effect) => effect.addEventListener('click', changeEffect));
-
 const onChangeFilter = () => {
   const effectElement = document.querySelector('.effects__radio:checked');
   const sliderValue = String (effectLevelSlider.noUiSlider.get());
@@ -124,85 +122,7 @@ const onChangeFilter = () => {
   }
 };
 
+effectsRadio.forEach((effectRadio) => effectRadio.addEventListener('click', (evt) => changeEffect(evt.target.value)));
 effectLevelSlider.noUiSlider.on('update', onChangeFilter);
-/*
-effectsRadio.forEach((effectRadio) => effectRadio.addEventListener('click', () => {
-  imgUploadPreview.classList = `img-upload__preview  effects__preview--${ effectRadio.value}`;
-  if (effectsRadio[0].checked) {
-    effectLevelSlider.classList.add('hidden');
-    effectLevelSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1
-      },
-      start: 1,
-      step: 0.1
-    });
-    imgUploadPreview.style = '';
-  } else if (effectsRadio[1].checked) {
-    effectLevelSlider.classList.remove('hidden');
-    effectLevelSlider.noUiSlider.on('update', () => {
-      const sliderValue = String (effectLevelSlider.noUiSlider.get());
-      imgUploadPreview.style = `filter: grayscale(${sliderValue})`;
-    });
-  } else if (effectsRadio[2].checked) {
-    effectLevelSlider.classList.remove('hidden');
-    effectLevelSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1
-      },
-      start: 1,
-      step: 0.1
-    });
-    effectLevelSlider.noUiSlider.on('update', () => {
-      const sliderValue = String (effectLevelSlider.noUiSlider.get());
-      imgUploadPreview.style = `filter: sepia(${sliderValue})`;
-    });
-  } else if (effectsRadio[3].checked) {
-    effectLevelSlider.classList.remove('hidden');
-    effectLevelSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 100
-      },
-      start: 100,
-      step: 1
-    });
-    effectLevelSlider.noUiSlider.on('update', () => {
-      const sliderValue = String (effectLevelSlider.noUiSlider.get());
-      imgUploadPreview.style = `filter: invert(${sliderValue}%)`;
-    });
-  } else if (effectsRadio[4].checked) {
-    effectLevelSlider.classList.remove('hidden');
-    effectLevelSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 3
-      },
-      start: 3,
-      step: 0.1
-    });
-    effectLevelSlider.noUiSlider.on('update', () => {
-      const sliderValue = String (effectLevelSlider.noUiSlider.get());
-      imgUploadPreview.style = `filter: blur(${sliderValue}px)`;
-    });
-  } else if (effectsRadio[5].checked) {
-    effectLevelSlider.classList.remove('hidden');
-    effectLevelSlider.noUiSlider.updateOptions({
-      range: {
-        min: 1,
-        max: 3
-      },
-      start: 3,
-      step: 0.1
-    });
-    effectLevelSlider.noUiSlider.on('update', () => {
-      const sliderValue = String (effectLevelSlider.noUiSlider.get());
-      imgUploadPreview.style = `filter: brightness(${sliderValue})`;
-    });
-  }
-}));
-*/
 scaleControlSmaller.addEventListener('click', makeSmaller);
 scaleControlBigger.addEventListener('click', makeBigger);
