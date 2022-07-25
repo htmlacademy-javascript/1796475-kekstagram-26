@@ -1,3 +1,4 @@
+const SHOW_ALERT_TIME = 5000;
 // Функция, возвращающая случайное целое число из переданного диапазона включительно
 // Логика для функции взята с ресурса https://learn.javascript.ru/task/random-int-min-max
 const getRandomInteger = (min, max) => {
@@ -51,7 +52,7 @@ const showAlert = (message) => {
 
   setTimeout(() => {
     alert.remove();
-  }, 5000);
+  }, SHOW_ALERT_TIME);
 };
 
 

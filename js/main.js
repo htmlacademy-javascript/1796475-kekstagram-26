@@ -1,4 +1,4 @@
-import {createPhotoDescriptions} from './data.js';
+//import {createPhotoDescriptions} from './data.js';
 import {getData} from './api.js';
 import {showAlert} from './util.js';
 import {renderPhotos} from './render.js';

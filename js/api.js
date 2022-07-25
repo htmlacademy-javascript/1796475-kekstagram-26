@@ -1,8 +1,9 @@
+const GET_ADDRESS = 'https://26.javascript.pages.academy/kekstagram/data';
+const SEND_ADDRESS = 'https://26.javascript.pages.academy/kekstagram';
+
 const getData = async (onSuccess, onFail) => {
   try {
-    const response = await fetch(
-      'https://26.javascript.pages.academy/kekstagram/data'
-    );
+    const response = await fetch(GET_ADDRESS);
     if(!response.ok) {
       throw new Error('Не удалось загрузить фотографии');
     }
@@ -16,7 +17,7 @@ const getData = async (onSuccess, onFail) => {
 const sendData = async (onSuccess, onFail, body) => {
   try {
     const response = await fetch(
-      'https://26.javascript.pages.academy/kekstagram',
+      SEND_ADDRESS,
       {
         method: 'POST',
         body,
@@ -25,8 +26,7 @@ const sendData = async (onSuccess, onFail, body) => {
     if(!response.ok) {
       throw new Error('Не удалось загрузить фотографии');
     }
-    const offers = await response.json();
-    onSuccess(offers);
+    onSuccess();
   } catch (error) {
     onFail(error.message);
   }

@@ -10,6 +10,8 @@ const uploadCancel = imgUploadOverlay.querySelector('#upload-cancel');
 const textHashtags = imgUploadOverlay.querySelector('.text__hashtags');
 const textDescription = imgUploadOverlay.querySelector('.text__description');
 const submitButton = imgUploadOverlay.querySelector('.img-upload__submit');
+const imgUploadPreview = document.querySelector('.img-upload__preview');
+const effectLevelSlider = document.querySelector('.effect-level__slider');
 const maxHashtagsNumber = 5;
 const hashTagRegexp = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
@@ -19,6 +21,10 @@ const onLoadingEscKeydown = (evt) => {
       evt.preventDefault();
       imgUploadOverlay.classList.add('hidden');
       body.classList.remove('modal-open');
+      imgUploadPreview.classList = 'img-upload__preview';
+      imgUploadPreview.style = '';
+      effectLevelSlider.classList.add('hidden');
+      uploadFile.value = '';
     }
   }
 };
@@ -31,7 +37,11 @@ const loading = () => {
 const closeLoading = () => {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  uploadFile.removeEventListener('change', loading);
+  imgUploadPreview.classList = 'img-upload__preview';
+  imgUploadPreview.style = '';
+  effectLevelSlider.classList.add('hidden');
+  uploadFile.value = '';
+
 };
 
 const createHashtagsArray = () => textHashtags.value.trim().toLowerCase().split(/\s+/);
@@ -59,15 +69,20 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
+const onWindowEscKeydown = (evt) =>  { if (isEscapeKey(evt)) {
+  evt.preventDefault();
+  document.querySelectorAll('.success, .error').forEach((element) => element.remove());
+}};
+
 const showSuccessWindow = () => {
   const successWindow = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
   const successInner = successWindow.querySelector('.success__inner');
-  document.addEventListener('keydown', (evt) =>  { if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    successWindow.remove();
-  }});
+  document.addEventListener('keydown', onWindowEscKeydown);
   successWindow.addEventListener('click', (evt) => {
-    if (!successInner.contains(evt.target) || evt.target.type === 'button') {successWindow.remove();}
+    if (!successInner.contains(evt.target) || evt.target.type === 'button') {
+      successWindow.remove();
+      document.removeEventListener('keydown', onWindowEscKeydown);
+    }
   });
   document.body.append(successWindow);
 };
@@ -75,17 +90,17 @@ const showSuccessWindow = () => {
 const showErrorWindow = () => {
   const errorWindow = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
   const errorInner = errorWindow.querySelector('.error__inner');
-  document.addEventListener('keydown', (evt) =>  { if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    errorWindow.remove();
-  }});
+  document.addEventListener('keydown', onWindowEscKeydown);
   errorWindow.addEventListener('click', (evt) => {
-    if (!errorInner.contains(evt.target) || evt.target.type === 'button') {errorWindow.remove();}
+    if (!errorInner.contains(evt.target) || evt.target.type === 'button') {
+      errorWindow.remove();
+      document.removeEventListener('keydown', onWindowEscKeydown);
+    }
   });
   document.body.append(errorWindow);
 };
 
-const setFormSubmit = (onSuccess) => {
+const setFormSubmit = () => {
   imgUploadForm.addEventListener('submit', (evt) => {
     const isValid = pristine.validate();
     if (isValid) {
@@ -93,7 +108,7 @@ const setFormSubmit = (onSuccess) => {
       blockSubmitButton();
       sendData(
         () => {
-          onSuccess();
+          closeLoading();
           showSuccessWindow();
           unblockSubmitButton();
         },
