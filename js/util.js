@@ -1,3 +1,4 @@
+const SHOW_ALERT_TIME = 5000;
 // Функция, возвращающая случайное целое число из переданного диапазона включительно
 // Логика для функции взята с ресурса https://learn.javascript.ru/task/random-int-min-max
 const getRandomInteger = (min, max) => {
@@ -27,4 +28,32 @@ const getRandomElement = (elements) => elements[getRandomInteger(0, elements.len
 // проверка нажатия Esc
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, checkLength, getUniqueInteger, getRandomElement, isEscapeKey};
+// ошибка сервера
+
+const showAlert = (message) => {
+  const alert = document.createElement('div');
+  alert.style.position = 'absolute';
+  alert.style.zIndex = '100';
+  alert.style.left = '0';
+  alert.style.top = '0';
+  alert.style.right = '0';
+  alert.style.bottom = '0';
+  alert.style.margin = '7px auto auto auto';
+  alert.style.padding = '15px';
+  alert.style.fontSize = '40px';
+  alert.style.textAlign = 'center';
+  alert.style.backgroundColor = 'red';
+  alert.style.width = 'max-content';
+  alert.style.height = 'max-content';
+  alert.style.border = '3px solid white';
+  alert.style.borderRadius = '5px';
+  alert.textContent = `Error: ${message}`;
+  document.body.append(alert);
+
+  setTimeout(() => {
+    alert.remove();
+  }, SHOW_ALERT_TIME);
+};
+
+
+export {getRandomInteger, checkLength, getUniqueInteger, getRandomElement, isEscapeKey, showAlert};
