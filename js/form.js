@@ -121,8 +121,6 @@ const setFormSubmit = () => {
     }
   });
 };
-
-setFormSubmit(closeLoading);
 /*
 imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -136,3 +134,4 @@ imgUploadForm.addEventListener('submit', (evt) => {
 uploadFile.addEventListener('change', loading);
 uploadCancel.addEventListener('click', closeLoading);
 
+export {setFormSubmit};
