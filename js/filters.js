@@ -7,21 +7,23 @@ const filterDefaultButton = document.querySelector('#filter-default');
 const filterRandomButton = document.querySelector('#filter-random');
 const filterDiscussedButton = document.querySelector('#filter-discussed');
 
-const showDefaultPhotos = (photos) => {
+const setActiveFilter = (filterElement) => {
   filtersButtons.forEach((button) => button.classList.remove('img-filters__button--active'));
-  filterDefaultButton.classList.add('img-filters__button--active');
+  filterElement.classList.add('img-filters__button--active');
+};
+
+const showDefaultPhotos = (photos) => {
+  setActiveFilter(filterDefaultButton);
   renderPhotos(photos);
 };
 
 const showRandomPhotos = (photos) => {
-  filtersButtons.forEach((button) => button.classList.remove('img-filters__button--active'));
-  filterRandomButton.classList.add('img-filters__button--active');
+  setActiveFilter(filterRandomButton);
   renderRandomPhotos(photos);
 };
 
 const showDiscussedPhotos = (photos) => {
-  filtersButtons.forEach((button) => button.classList.remove('img-filters__button--active'));
-  filterDiscussedButton.classList.add('img-filters__button--active');
+  setActiveFilter(filterDiscussedButton);
   renderDiscussedPhotos(photos);
 };
 

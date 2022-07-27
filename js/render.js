@@ -1,5 +1,6 @@
-import {showBigPicture, closeBigPicture} from './big_picture.js';
-import {getUniqueInteger} from './util.js';
+import {showBigPicture} from './big_picture.js';
+
+const RANDOM_PHOTOS_QUANTITY = 10;
 
 const similarListElement = document.querySelector('.pictures');
 const similarPictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -15,40 +16,27 @@ const renderPhoto = ({url, likes, comments, description}) => {
   return photoElement;
 };
 
-const renderPhotos = (photos) => {
+const clearSimilarList = () => {
   similarListElement.querySelectorAll('.picture').forEach((element) => {
     element.remove();
   });
+};
+
+const renderPhotos = (photos) => {
+  clearSimilarList();
   similarListElement.append(...photos.map(renderPhoto));
 };
 
-const getCommentsLength = (photoElement) => Number(photoElement.querySelector('.picture__comments').textContent);
-
-const moreDiscussed = (photoElenentA, photoElenentB) => {
-  const commentsLengthA = getCommentsLength(photoElenentA);
-  const commentsLengthB = getCommentsLength(photoElenentB);
-
-  return commentsLengthB - commentsLengthA;
-};
+const sortMoreDiscussed = (photoA, photoB) => photoA.comments.length > photoB.comments.length ? -1 : 1;
 
 const renderDiscussedPhotos = (photos) => {
-  similarListElement.querySelectorAll('.picture').forEach((element) => {
-    element.remove();
-  });
-  similarListElement.append(...photos.map(renderPhoto).slice().sort(moreDiscussed));
+  clearSimilarList();
+  similarListElement.append(...photos.slice().sort(sortMoreDiscussed).map(renderPhoto));
 };
 
 const renderRandomPhotos = (photos) => {
-  similarListElement.querySelectorAll('.picture').forEach((element) => {
-    element.remove();
-  });
-
-  for (let i = 0; i < 10; i++) {
-    const randomPhotos = photos[getUniqueInteger(0, photos.length - 1)];
-    similarListElement.append(...randomPhotos.map(renderPhoto));
-  }
+  clearSimilarList();
+  similarListElement.append(...photos.sort(() => Math.random() - Math.random()).slice(0, RANDOM_PHOTOS_QUANTITY).map(renderPhoto));
 };
-
-closeBigPicture();
 
 export {renderPhotos, renderDiscussedPhotos, renderRandomPhotos};
