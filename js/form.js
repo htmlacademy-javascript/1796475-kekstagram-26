@@ -10,8 +10,8 @@ const uploadCancel = imgUploadOverlay.querySelector('#upload-cancel');
 const textHashtags = imgUploadOverlay.querySelector('.text__hashtags');
 const textDescription = imgUploadOverlay.querySelector('.text__description');
 const submitButton = imgUploadOverlay.querySelector('.img-upload__submit');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
+const preview = document.querySelector('.img-upload__preview > img');
+const effectLevel = document.querySelector('.img-upload__effect-level');
 const maxHashtagsNumber = 5;
 const hashTagRegexp = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
@@ -21,25 +21,25 @@ const onLoadingEscKeydown = (evt) => {
       evt.preventDefault();
       imgUploadOverlay.classList.add('hidden');
       body.classList.remove('modal-open');
-      imgUploadPreview.classList = 'img-upload__preview';
-      imgUploadPreview.style = '';
-      effectLevelSlider.classList.add('hidden');
+      preview.classList = '';
+      preview.style = '';
+      effectLevel.classList.add('hidden');
       uploadFile.value = '';
     }
   }
 };
-const loading = () => {
+const onUploadFileChange = () => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onLoadingEscKeydown);
 };
 
-const closeLoading = () => {
+const onUploadCancelClick = () => {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  imgUploadPreview.classList = 'img-upload__preview';
-  imgUploadPreview.style = '';
-  effectLevelSlider.classList.add('hidden');
+  preview.classList = '';
+  preview.style = '';
+  effectLevel.classList.add('hidden');
   uploadFile.value = '';
 
 };
@@ -52,6 +52,11 @@ const isCorrectHashtagsNumber = () => createHashtagsArray().length <= maxHashtag
 
 const validateHashtags = () => createHashtagsArray().every(isCorrectHashtag) || textHashtags.value === '';
 
+const isDuplicateHashtags = () => {
+  const arrayWithoutDuplicates = [...new Set(createHashtagsArray())];
+  return arrayWithoutDuplicates.length === createHashtagsArray().length;
+};
+
 const pristine = new Pristine(imgUploadForm, {
   classTo:'img-upload__field-wrapper',
   errorTextParent:'img-upload__field-wrapper',
@@ -59,6 +64,7 @@ const pristine = new Pristine(imgUploadForm, {
 
 pristine.addValidator(textHashtags, validateHashtags, 'строка после решётки не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации, эмодзи');
 pristine.addValidator(textHashtags, isCorrectHashtagsNumber, `максимальное количество хэштегов - ${maxHashtagsNumber}`);
+pristine.addValidator(textHashtags, isDuplicateHashtags, 'не должно быть дублирующихся хэштегов');
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -85,6 +91,7 @@ const showSuccessWindow = () => {
     }
   });
   document.body.append(successWindow);
+  imgUploadForm.reset();
 };
 
 const showErrorWindow = () => {
@@ -108,7 +115,7 @@ const setFormSubmit = () => {
       blockSubmitButton();
       sendData(
         () => {
-          closeLoading();
+          onUploadCancelClick();
           showSuccessWindow();
           unblockSubmitButton();
         },
@@ -121,17 +128,8 @@ const setFormSubmit = () => {
     }
   });
 };
-/*
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-  }
-});
-*/
-uploadFile.addEventListener('change', loading);
-uploadCancel.addEventListener('click', closeLoading);
+
+uploadFile.addEventListener('change', onUploadFileChange);
+uploadCancel.addEventListener('click', onUploadCancelClick);
 
 export {setFormSubmit};
