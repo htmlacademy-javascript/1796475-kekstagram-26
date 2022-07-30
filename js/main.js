@@ -1,4 +1,3 @@
-//import {createPhotoDescriptions} from './data.js';
 import {getData} from './api.js';
 import {showAlert} from './util.js';
 import {renderPhotos} from './render.js';
@@ -17,7 +16,3 @@ const onGetDataSuccess = (data) => {
 };
 
 getData(onGetDataSuccess, showAlert);
-/*
-const photoDescriptions = createPhotoDescriptions();
-renderPhotos(photoDescriptions);
-*/

@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
 
+const QUANTITY_SHOWN_COMMENTS = [0, 5];
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const similarCommentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
@@ -30,8 +32,8 @@ const hideCommentsLoader = () => {
   }
 };
 
-const showMoreComments = () => {
-  Array.from(bigPicture.querySelectorAll('.social__comment.hidden')).slice(0, 5).forEach((element) => element.classList.remove('hidden'));
+const onCommentsLoaderClick = () => {
+  Array.from(bigPicture.querySelectorAll('.social__comment.hidden')).slice(...QUANTITY_SHOWN_COMMENTS).forEach((element) => element.classList.remove('hidden'));
   visibleCommentsCount.textContent = bigPicture.querySelectorAll('.social__comment:not(.hidden)').length;
   hideCommentsLoader();
 };
@@ -43,8 +45,8 @@ const showBigPicture = ({url, likes, comments, description}) => {
   commentsCount.textContent = comments.length;
   bigPicture.querySelector('.social__comments').append(...comments.map(renderComment));
   bigPicture.querySelector('.social__caption').textContent = description;
-  showMoreComments();
-  commentsLoader.addEventListener('click', showMoreComments);
+  onCommentsLoaderClick();
+  commentsLoader.addEventListener('click', onCommentsLoaderClick);
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onBigPictureEscKeydown);
   bigPicture.classList.remove('hidden');

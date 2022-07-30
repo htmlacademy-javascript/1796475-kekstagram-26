@@ -1,20 +1,27 @@
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+const SCALE_STEP = 25;
+const STYLE_SCALE_STEP = 0.25;
+const PERCENT = 0.01;
+
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
+const preview = document.querySelector('.img-upload__preview > img');
 const effectsRadio = document.querySelectorAll('.effects__radio');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectLevel = document.querySelector('.img-upload__effect-level');
 
-const makeSmaller = () => {
+const onScaleControlSmallerClick = () => {
   const currentValue = Number(scaleControlValue.value.match(/\d+/));
-  if (currentValue > 25) { scaleControlValue.value = `${String (currentValue - 25)  }%`;
-    imgUploadPreview.style = `transform: scale(${String (currentValue * 0.01 - 0.25)})`;
+  if (currentValue > MIN_SCALE) { scaleControlValue.value = `${String (currentValue - SCALE_STEP)  }%`;
+    preview.style = `transform: scale(${String (currentValue * PERCENT - STYLE_SCALE_STEP)})`;
   }
 };
-const makeBigger = () => {
+const onScaleControlBiggerClick = () => {
   const currentValue = Number(scaleControlValue.value.match(/\d+/));
-  if (currentValue < 100) { scaleControlValue.value = `${String (currentValue + 25)  }%`;
-    imgUploadPreview.style = `transform: scale(${String (currentValue * 0.01 + 0.25)})`;
+  if (currentValue < MAX_SCALE) { scaleControlValue.value = `${String (currentValue + SCALE_STEP)  }%`;
+    preview.style = `transform: scale(${String (currentValue * PERCENT + STYLE_SCALE_STEP)})`;
   }
 };
 
@@ -36,7 +43,7 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
-effectLevelSlider.classList.add('hidden');
+effectLevel.classList.add('hidden');
 
 const effectSettings = {
   chrome:{
@@ -102,15 +109,15 @@ const effectSettings = {
 };
 
 const changeEffect = (effect) => {
-  imgUploadPreview.classList = `img-upload__preview  effects__preview--${effect}`;
+  preview.classList = `effects__preview--${effect}`;
   const settings = effectSettings[effect];
   if (settings) {
-    effectLevelSlider.classList.remove('hidden');
+    effectLevel.classList.remove('hidden');
     effectLevelSlider.noUiSlider.updateOptions(settings.slider);
     return;
   }
-  effectLevelSlider.classList.add('hidden');
-  imgUploadPreview.style.filter = '';
+  effectLevel.classList.add('hidden');
+  preview.style.filter = '';
 };
 
 const onChangeFilter = () => {
@@ -118,11 +125,11 @@ const onChangeFilter = () => {
   const sliderValue = String (effectLevelSlider.noUiSlider.get());
   const settings = effectSettings[effectElement.value];
   if (settings) {
-    imgUploadPreview.style.filter = `${settings.filter}(${sliderValue}${settings.units})`;
+    preview.style.filter = `${settings.filter}(${sliderValue}${settings.units})`;
   }
 };
 
 effectsRadio.forEach((effectRadio) => effectRadio.addEventListener('click', (evt) => changeEffect(evt.target.value)));
 effectLevelSlider.noUiSlider.on('update', onChangeFilter);
-scaleControlSmaller.addEventListener('click', makeSmaller);
-scaleControlBigger.addEventListener('click', makeBigger);
+scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
+scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
