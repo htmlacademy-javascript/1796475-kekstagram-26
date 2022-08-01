@@ -52,11 +52,11 @@ const showBigPicture = ({url, likes, comments, description}) => {
   bigPicture.classList.remove('hidden');
 };
 
-const closeBigPicture = () => {
+const onBigPictureCancelClick = () => {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onBigPictureEscKeydown);
 };
 
-bigPictureCancel.addEventListener('click', closeBigPicture);
+bigPictureCancel.addEventListener('click', onBigPictureCancelClick);
 
-export{showBigPicture, closeBigPicture};
+export{showBigPicture, onBigPictureCancelClick};
